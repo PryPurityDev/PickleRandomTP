@@ -1,0 +1,31 @@
+name: PickleRandomTP
+version: '0.2-SNAPSHOT'
+main: org.picklecraft.prypurity.picklerandomtp.PickleRandomTP
+api-version: '1.21'
+softdepend:
+  - WorldGuard
+  - GriefPrevention
+  - Lands
+commands:
+  rtp:
+    description: Randomly teleport to a location within the specified range.
+    permission: picklerandomtp.use
+  prtpmind:
+    description: Set the minimum distance for random teleportation.
+    permission: picklerandomtp.admin
+  prtpmaxd:
+    description: Set the maximum distance for random teleportation.
+    permission: picklerandomtp.admin
+  prtpsetcenter:
+    description: Set the center position for random teleportation.
+    permission: picklerandomtp.admin
+permissions:
+  picklerandomtp.use:
+    description: Allows the use of the /rtp command.
+    default: op
+  picklerandomtp.admin:
+    description: Allows the use of admin commands for PickleRandomTP.
+    default: op
+  picklerandomtp.bypass:
+    description: Bypass the cooldown for /rtp.
+    default: op

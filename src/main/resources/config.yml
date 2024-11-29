@@ -1,0 +1,20 @@
+min-distance: 100
+max-distance: 1000
+cooldown: 60  # Cooldown time in seconds
+check-claims: true  # Check for claimed land
+center:
+  x: 0
+  y: 64
+  z: 0
+unsafe-materials:
+  - WATER
+  - LAVA
+  - ICE
+  - PACKED_ICE
+  - BLUE_ICE
+  - OAK_LEAVES
+  - BIRCH_LEAVES
+  - SPRUCE_LEAVES
+  - DARK_OAK_LEAVES
+  - ACACIA_LEAVES
+  - JUNGLE_LEAVES
