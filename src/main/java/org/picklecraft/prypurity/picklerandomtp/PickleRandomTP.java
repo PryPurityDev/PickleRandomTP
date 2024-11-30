@@ -230,4 +230,9 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
         List<String> unsafeMaterials = this.getConfig().getStringList("unsafe-materials");
         return unsafeMaterials.contains(blockType.toString());
     }
+    @Override public void onDisable() {
+        // Save the plugin's configuration & clear the cooldowns to free memory.
+        this.saveConfig();
+        cooldowns.clear();
+    }
 }
