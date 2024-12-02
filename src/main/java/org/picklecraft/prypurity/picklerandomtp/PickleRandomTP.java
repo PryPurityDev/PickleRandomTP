@@ -49,6 +49,9 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
 
     private String getMessage(String key, Map<String, String> placeholders) {
         String message = messagesConfig.getString(key);
+        if ( message == null ) {
+            return messagesConfig.getString("Error");
+        }
         if (placeholders != null) {
             for (Map.Entry<String, String> entry : placeholders.entrySet()) {
                 message = message.replace("{" + entry.getKey() + "}", entry.getValue());
@@ -60,12 +63,11 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("rtp")) {
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof Player player)) {
                 sender.sendMessage(getMessage("only_players", null));
                 return true;
             }
 
-            Player player = (Player) sender;
             if (!player.hasPermission("picklerandomtp.use")) {
                 player.sendMessage(getMessage("no_permission", null));
                 return true;
@@ -82,18 +84,13 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
 
             if (!player.hasPermission("picklerandomtp.bypass") && cooldowns.containsKey(playerUUID)) {
                 long lastUsed = cooldowns.get(playerUUID);
-                if (currentTime - lastUsed < cooldownTime * 1000) {
+                if (currentTime - lastUsed < cooldownTime * 1000L) {
                     player.sendMessage(getMessage("cooldown", null));
                     return true;
                 }
             }
 
-            Location center = new Location(
-                    player.getWorld(),
-                    config.getDouble("center.x"),
-                    config.getDouble("center.y"),
-                    config.getDouble("center.z")
-            );
+            Location center = new Location(player.getWorld(), config.getDouble("center.x"), config.getDouble("center.y"), config.getDouble("center.z"));
 
             Location randomLocation = getRandomLocation(center, minDistance, maxDistance, checkClaims);
             randomLocation.setY(randomLocation.getY() + 1);
@@ -218,9 +215,7 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
         GriefPrevention griefPrevention = (GriefPrevention) Bukkit.getPluginManager().getPlugin("GriefPrevention");
         if (griefPrevention != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
-            if (claim != null) {
-                return true;
-            }
+            return claim != null;
         }
         return false;
     }
@@ -230,7 +225,9 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
         List<String> unsafeMaterials = this.getConfig().getStringList("unsafe-materials");
         return unsafeMaterials.contains(blockType.toString());
     }
-    @Override public void onDisable() {
+
+    @Override
+    public void onDisable() {
         // Save the plugin's configuration & clear the cooldowns to free memory.
         this.saveConfig();
         cooldowns.clear();
