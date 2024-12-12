@@ -8,10 +8,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,7 +46,7 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
 
     private String getMessage(String key, Map<String, String> placeholders) {
         String message = messagesConfig.getString(key);
-        if ( message == null ) {
+        if (message == null) {
             return messagesConfig.getString("Error");
         }
         if (placeholders != null) {
@@ -89,16 +86,22 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
                     return true;
                 }
             }
+            World world = player.getWorld();
+            for (String whitelistWorld : this.getConfig().getStringList("whitelist")) {
+                if (world.getName().equals(whitelistWorld)) {
+                    Location center = new Location(player.getWorld(), config.getDouble("center.x"), config.getDouble("center.y"), config.getDouble("center.z"));
 
-            Location center = new Location(player.getWorld(), config.getDouble("center.x"), config.getDouble("center.y"), config.getDouble("center.z"));
+                    Location randomLocation = getRandomLocation(center, minDistance, maxDistance, checkClaims);
+                    randomLocation.setY(randomLocation.getY() + 1);
+                    player.teleport(randomLocation);
+                    player.sendMessage(getMessage("teleported", null));
 
-            Location randomLocation = getRandomLocation(center, minDistance, maxDistance, checkClaims);
-            randomLocation.setY(randomLocation.getY() + 1);
-            player.teleport(randomLocation);
-            player.sendMessage(getMessage("teleported", null));
+                    cooldowns.put(playerUUID, currentTime);
+                    return true;
+                }
+            } player.sendMessage(getMessage("Not_Whitelisted", null));
+            return false;
 
-            cooldowns.put(playerUUID, currentTime);
-            return true;
         } else if (command.getName().equalsIgnoreCase("prtpmind")) {
             if (!sender.hasPermission("picklerandomtp.admin")) {
                 sender.sendMessage(getMessage("no_permission", null));
@@ -233,3 +236,4 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
         cooldowns.clear();
     }
 }
+

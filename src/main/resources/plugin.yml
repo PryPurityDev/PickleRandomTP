@@ -1,11 +1,10 @@
 name: PickleRandomTP
-version: '0.2-SNAPSHOT'
+version: '0.3-SNAPSHOT'
 main: org.picklecraft.prypurity.picklerandomtp.PickleRandomTP
 api-version: '1.21'
 softdepend:
   - WorldGuard
   - GriefPrevention
-  - Lands
 commands:
   rtp:
     description: Randomly teleport to a location within the specified range.
