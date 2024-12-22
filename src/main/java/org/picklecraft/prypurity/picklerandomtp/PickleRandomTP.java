@@ -247,7 +247,7 @@ public class PickleRandomTP extends JavaPlugin implements CommandExecutor {
             int y = center.getWorld().getHighestBlockYAt(x, z);
             randomLocation = new Location(center.getWorld(), x, y, z);
             attempts++;
-            if (attempts > 100) {
+            if (attempts > getConfig().getInt("teleport_attemtps")) {
                 return center; // Fallback to center if too many attempts
             }
         } while (checkClaims && (isClaimed(randomLocation) || isUnsafe(randomLocation)));

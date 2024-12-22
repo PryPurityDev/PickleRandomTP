@@ -1,5 +1,5 @@
 name: PickleRandomTP
-version: '0.3-SNAPSHOT'
+version: '0.4-SNAPSHOT'
 main: org.picklecraft.prypurity.picklerandomtp.PickleRandomTP
 api-version: '1.21'
 softdepend:
