@@ -5,9 +5,11 @@
 whitelist:
   - 'world'
 #  - 'anotha won'
-
 min-distance: 100
 max-distance: 1000
+countdown:
+  enabled: false
+  time: 3
 cooldown: 60  # Cooldown time in seconds
 check-claims: true  # Check for claimed land
 center:
@@ -26,3 +28,6 @@ unsafe-materials:
   - DARK_OAK_LEAVES
   - ACACIA_LEAVES
   - JUNGLE_LEAVES
+  -
+
+    Add a countdown before a player teleports and that can have the time changed and toggled true or false in the config.yml
